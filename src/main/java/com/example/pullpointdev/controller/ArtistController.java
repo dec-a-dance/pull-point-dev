@@ -35,7 +35,7 @@ public class ArtistController {
         return ResponseEntity.ok(artistService.createArtist(req));
     }
 
-    @PostMapping("/filter")
+    @PostMapping("/search")
     public ResponseEntity<List<Artist>> filter(@RequestBody SearchArtistsReq req) {
         return ResponseEntity.ok(artistService.searchArtists(req));
     }

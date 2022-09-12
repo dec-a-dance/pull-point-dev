@@ -20,7 +20,7 @@ import java.util.List;
 public class CategoryController {
     private final CategoriesService categoriesService;
 
-    @GetMapping("/main")
+    @GetMapping()
     public ResponseEntity<List<Category>> getMainCategories(){
         return ResponseEntity.ok(categoriesService.getMainCategories());
     }

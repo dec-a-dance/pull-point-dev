@@ -33,10 +33,7 @@ public class ArtistService {
 
 
     public Artist updateArtist(UpdateArtistReq req) {
-        Artist artist = artistRepository.findById(req.getId()).orElse(null);
-        if (artist == null){
-
-        }
+        Artist artist = artistRepository.findById(req.getId()).orElseThrow(NullPointerException::new);
         artist.setDescription(req.getDescription());
         List<Category> categories = new ArrayList<>();
         artist.setSubcategories(categories);
@@ -62,7 +59,7 @@ public class ArtistService {
             artists.removeIf(a -> (!a.getName().contains(req.getName())));
         }
         List<Category> subcategories = new ArrayList<>();
-        if (req.getSubcategories() != null) {
+        if (req.getSubcategories() != null && req.getSubcategories().size() != 0) {
             for (Long i : req.getSubcategories()) {
                 subcategories.add(categoryRepository.findById(i).orElseThrow());
             }
