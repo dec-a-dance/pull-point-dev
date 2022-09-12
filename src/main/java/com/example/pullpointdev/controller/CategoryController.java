@@ -2,6 +2,7 @@ package com.example.pullpointdev.controller;
 
 import com.example.pullpointdev.entity.Category;
 import com.example.pullpointdev.service.CategoriesService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +16,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/category")
+@Tag(name="category", description = "Category API")
 public class CategoryController {
     private final CategoriesService categoriesService;
 

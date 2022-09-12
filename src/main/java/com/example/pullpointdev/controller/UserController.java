@@ -4,19 +4,20 @@ import com.example.pullpointdev.dto.ApproveTokenReq;
 import com.example.pullpointdev.dto.ApproveTokenResp;
 import com.example.pullpointdev.dto.SendTokenReq;
 import com.example.pullpointdev.dto.UpdateUserReq;
+import com.example.pullpointdev.entity.User;
 import com.example.pullpointdev.service.AuthService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.xml.ws.Response;
-
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/auth")
-public class AuthController {
+@RequestMapping("/user")
+@Tag(name="user", description = "Users API")
+public class UserController {
     private final AuthService authService;
 
     @PostMapping("/token")
@@ -40,8 +41,7 @@ public class AuthController {
 
     @PutMapping()
     @SneakyThrows
-    public ResponseEntity<String> register(@RequestBody UpdateUserReq req){
-        authService.updateUser(req);
-        return ResponseEntity.ok("Updated");
+    public ResponseEntity<User> updateUser(@RequestBody UpdateUserReq req){
+        return ResponseEntity.ok(authService.updateUser(req));
     }
 }

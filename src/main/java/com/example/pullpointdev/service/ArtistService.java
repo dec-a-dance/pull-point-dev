@@ -27,43 +27,10 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 public class ArtistService {
-    private final PullPointRepository pullPointRepository;
     private final ArtistRepository artistRepository;
     private final UserRepository userRepository;
     private final CategoryRepository categoryRepository;
 
-    public boolean createPullPoint(CreatePullPointReq req) throws ParseException {
-        SimpleDateFormat format = new SimpleDateFormat();
-        format.applyPattern("dd.MM.yyyy:hh.mm");
-        PullPoint pp = new PullPoint();
-        List<Artist> artists;
-        List<Category> subcategories;
-        System.out.println(req.subcategories);
-        pp.setSubcategories(new ArrayList<>());
-        if (!(req.getArtists() == null)) {
-            for (long id : req.getArtists()) {
-                artists = pp.getArtists();
-                artists.add(artistRepository.findById(id).orElseThrow());
-                pp.setArtists(artists);
-            }
-        }
-        for (Long id : req.subcategories) {
-            subcategories = pp.getSubcategories();
-            subcategories.add(categoryRepository.findById(id.longValue()));
-            pp.setSubcategories(subcategories);
-        }
-        pp.setName(req.getName());
-        pp.setAddress(req.getAddress());
-        pp.setLatitude(req.getLatitude());
-        pp.setLongitude(req.getLongitude());
-        pp.setDescription(req.getDescription());
-        pp.setCategory(categoryRepository.findById(req.getCategory()).orElseThrow());
-        pp.setStartTime(format.parse(req.getStartTime()));
-        pp.setEndTime(format.parse(req.getEndTime()));
-        pp.setOwner(artistRepository.findByOwner(userRepository.findById(req.getOwner())));
-        pullPointRepository.save(pp);
-        return true;
-    }
 
     public Artist updateArtist(UpdateArtistReq req) {
         Artist artist = artistRepository.findById(req.getId()).orElse(null);

@@ -66,10 +66,11 @@ public class AuthService {
         return new ApproveTokenResp(result, user);
     }
 
-    public void updateUser(UpdateUserReq req){
+    public User updateUser(UpdateUserReq req){
         User user = userRepository.findByPhone(req.getPhone());
         user.setUsername(req.getUsername());
-        userRepository.save(user);
+        user = userRepository.save(user);
+        return user;
     }
 
 
