@@ -4,10 +4,12 @@ import com.example.pullpointdev.entity.Artist;
 import com.example.pullpointdev.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.Optional;
+
 public interface ArtistRepository extends JpaRepository<Artist, Long> {
     Artist findByName(String name);
 
-    Artist findById(long id);
+    Optional<Artist> findById(Long id);
 
-    Artist findByUser(User user);
+    Artist findByOwner(User user);
 }

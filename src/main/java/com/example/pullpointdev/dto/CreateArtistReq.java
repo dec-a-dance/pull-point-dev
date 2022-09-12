@@ -1,14 +1,12 @@
 package com.example.pullpointdev.dto;
 
-import com.example.pullpointdev.entity.Category;
 import lombok.Data;
 
-import javax.persistence.*;
 import java.util.List;
 
 @Data
-public class UpdateArtistReq {
-    private Long id;
+public class CreateArtistReq {
+    private Long owner;
 
     private String name;
 

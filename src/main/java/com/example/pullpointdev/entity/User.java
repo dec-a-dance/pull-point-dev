@@ -25,5 +25,8 @@ public class User {
     private List<Artist> favourites;
 
     @Column(name="is_artist")
-    private boolean isArtist;
+    private Boolean isArtist;
+
+    @OneToMany
+    private List<Artist> artists;
 }

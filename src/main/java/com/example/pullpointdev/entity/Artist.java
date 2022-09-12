@@ -1,5 +1,6 @@
 package com.example.pullpointdev.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,7 +18,7 @@ import java.util.List;
 public class Artist {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @Column(name="name")
     private String name;
@@ -29,10 +30,10 @@ public class Artist {
     private Category category;
 
     @Column(name="subcategories")
-    @OneToMany
+    @ManyToMany
     private List<Category> subcategories;
 
-    @OneToOne
-    private User user;
-
+    @ManyToOne
+    @JsonIgnore
+    private User owner;
 }

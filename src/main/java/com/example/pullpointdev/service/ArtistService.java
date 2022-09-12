@@ -1,6 +1,8 @@
 package com.example.pullpointdev.service;
 
+import com.example.pullpointdev.dto.CreateArtistReq;
 import com.example.pullpointdev.dto.CreatePullPointReq;
+import com.example.pullpointdev.dto.SearchArtistsReq;
 import com.example.pullpointdev.dto.UpdateArtistReq;
 import com.example.pullpointdev.entity.Artist;
 import com.example.pullpointdev.entity.Category;
@@ -11,6 +13,8 @@ import com.example.pullpointdev.repository.CategoryRepository;
 import com.example.pullpointdev.repository.PullPointRepository;
 import com.example.pullpointdev.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
@@ -21,6 +25,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class ArtistService {
     private final PullPointRepository pullPointRepository;
     private final ArtistRepository artistRepository;
@@ -35,14 +40,14 @@ public class ArtistService {
         List<Category> subcategories;
         System.out.println(req.subcategories);
         pp.setSubcategories(new ArrayList<>());
-        if(!(req.getArtists() == null)) {
+        if (!(req.getArtists() == null)) {
             for (long id : req.getArtists()) {
                 artists = pp.getArtists();
-                artists.add(artistRepository.findById(id));
+                artists.add(artistRepository.findById(id).orElseThrow());
                 pp.setArtists(artists);
             }
         }
-        for (Long id: req.subcategories){
+        for (Long id : req.subcategories) {
             subcategories = pp.getSubcategories();
             subcategories.add(categoryRepository.findById(id.longValue()));
             pp.setSubcategories(subcategories);
@@ -55,25 +60,83 @@ public class ArtistService {
         pp.setCategory(categoryRepository.findById(req.getCategory()).orElseThrow());
         pp.setStartTime(format.parse(req.getStartTime()));
         pp.setEndTime(format.parse(req.getEndTime()));
-        pp.setOwner(artistRepository.findByUser(userRepository.findById(req.getOwner())));
+        pp.setOwner(artistRepository.findByOwner(userRepository.findById(req.getOwner())));
         pullPointRepository.save(pp);
         return true;
     }
 
-    public Artist updateArtist(UpdateArtistReq req){
-        User user = userRepository.findById(req.getUser());
-        Artist artist = artistRepository.findByUser(user);
+    public Artist updateArtist(UpdateArtistReq req) {
+        Artist artist = artistRepository.findById(req.getId()).orElse(null);
+        if (artist == null){
+
+        }
         artist.setDescription(req.getDescription());
         List<Category> categories = new ArrayList<>();
         artist.setSubcategories(categories);
-        for (long id: req.getSubcategories()){
+        for (long id : req.getSubcategories()) {
             categories = artist.getSubcategories();
             categories.add(categoryRepository.findById(id));
             artist.setSubcategories(categories);
         }
-        artist.setCategory(categoryRepository.findById(req.getCategory()));
+        artist.setCategory(categoryRepository.findById(req.getCategory()).orElseThrow());
         artist.setName(req.getName());
         artistRepository.save(artist);
         return artist;
+    }
+
+    public List<Artist> searchArtists(SearchArtistsReq req) {
+        Artist artist = new Artist();
+        if (req.getCategory() != null) {
+            artist.setCategory(categoryRepository.findById(req.getCategory()).orElseThrow());
+        }
+
+        List<Artist> artists = artistRepository.findAll(Example.of(artist));
+        if (req.getName() != null) {
+            artists.removeIf(a -> (!a.getName().contains(req.getName())));
+        }
+        List<Category> subcategories = new ArrayList<>();
+        if (req.getSubcategories() != null) {
+            for (Long i : req.getSubcategories()) {
+                subcategories.add(categoryRepository.findById(i).orElseThrow());
+            }
+            artists.removeIf(a -> (!a.getSubcategories().containsAll(subcategories)));
+        }
+
+        return artists;
+    }
+
+    public List<Artist> getArtistsInfo(long id){
+        return userRepository.findById(id).getArtists();
+    }
+
+    public Artist createArtist(CreateArtistReq req){
+        User user = userRepository.findById(req.getOwner()).orElseThrow();
+        user.setIsArtist(true);
+        user = userRepository.save(user);
+        Artist artist = new Artist();
+        artist.setOwner(userRepository.findById(req.getOwner()).orElseThrow());
+        artist = artistRepository.save(artist);
+        List<Artist> ar = user.getArtists();
+        ar.add(artist);
+        log.info(String.valueOf(user.getArtists().size()));
+        user.setArtists(ar);
+        log.info(String.valueOf(user.getArtists().size()));
+        userRepository.save(user);
+        UpdateArtistReq update = new UpdateArtistReq();
+        update.setId(artist.getId());
+        update.setCategory(req.getCategory());
+        update.setSubcategories(req.getSubcategories());
+        update.setName(req.getName());
+        update.setDescription(req.getDescription());
+        artist = updateArtist(update);
+        return artist;
+    }
+
+    public void deleteArtist(long id){
+        Artist artist = artistRepository.findById(id).orElseThrow(NullPointerException::new);
+        User user = artist.getOwner();
+        user.getArtists().remove(artist);
+        userRepository.save(user);
+        artistRepository.delete(artist);
     }
 }

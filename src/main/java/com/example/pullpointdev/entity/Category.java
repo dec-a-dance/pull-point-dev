@@ -1,5 +1,6 @@
 package com.example.pullpointdev.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -24,6 +25,7 @@ public class Category {
     @Column(name="pic")
     private String pic;
 
+    @JsonIgnore
     @OneToOne
     @Nullable
     private Category parent;

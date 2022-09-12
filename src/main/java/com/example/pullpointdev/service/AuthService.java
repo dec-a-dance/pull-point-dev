@@ -9,15 +9,18 @@ import com.example.pullpointdev.repository.ArtistRepository;
 import com.example.pullpointdev.repository.UserAuthRepository;
 import com.example.pullpointdev.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Random;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class AuthService {
     private final UserRepository userRepository;
     private final UserAuthRepository userAuthRepository;
@@ -31,7 +34,7 @@ public class AuthService {
         if (user == null){
             user = new User();
             user.setPhone(phone);
-            user.setArtist(false);
+            user.setIsArtist(false);
             userRepository.save(user);
             UserAuth newAuth = new UserAuth();
             newAuth.setOwner(user);
@@ -81,13 +84,5 @@ public class AuthService {
         return sb.toString();
     }
 
-    public boolean giveMeArtist(long id){
-        User user = userRepository.findById(id);
-        user.setArtist(true);
-        userRepository.save(user);
-        Artist artist = new Artist();
-        artist.setUser(userRepository.findById(id));
-        artistRepository.save(artist);
-        return true;
-    }
+
 }

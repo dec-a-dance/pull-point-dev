@@ -44,14 +44,4 @@ public class AuthController {
         authService.updateUser(req);
         return ResponseEntity.ok("Updated");
     }
-
-    @PostMapping("/i_am_artist/{id}")
-    public ResponseEntity<String> giveArtist(@PathVariable long id){
-        if(authService.giveMeArtist(id)){
-            return ResponseEntity.ok("You are artist now!");
-        }
-        else{
-            return new ResponseEntity<>("Some shit happened.", HttpStatus.I_AM_A_TEAPOT);
-        }
-    }
 }
