@@ -1,15 +1,11 @@
 package com.example.pullpointdev.util;
 
-import com.example.pullpointdev.entity.Artist;
-import com.example.pullpointdev.entity.Category;
-import com.example.pullpointdev.entity.PullPoint;
-import com.example.pullpointdev.repository.ArtistRepository;
-import com.example.pullpointdev.repository.CategoryRepository;
-import com.example.pullpointdev.repository.PullPointRepository;
+import com.example.pullpointdev.category.model.Category;
+import com.example.pullpointdev.artist.repository.ArtistRepository;
+import com.example.pullpointdev.category.repository.CategoryRepository;
+import com.example.pullpointdev.pullpoint.repository.PullPointRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.ApplicationArguments;
-import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
