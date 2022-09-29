@@ -8,5 +8,6 @@ import lombok.Data;
 @AllArgsConstructor
 public class ApproveTokenResp {
     private boolean result;
+    private String jwt;
     private User user;
 }

@@ -2,6 +2,7 @@ package com.example.pullpointdev.category.controller;
 
 import com.example.pullpointdev.category.model.Category;
 import com.example.pullpointdev.category.service.CategoriesService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -20,11 +21,13 @@ public class CategoryController {
     private final CategoriesService categoriesService;
 
     @GetMapping()
+    @Operation(description = "get all main categories")
     public ResponseEntity<List<Category>> getMainCategories(){
         return ResponseEntity.ok(categoriesService.getMainCategories());
     }
 
     @GetMapping("/{id}")
+    @Operation(description = "get all subcategories for certain category")
     public ResponseEntity<List<Category>> getAllByParent(@PathVariable long id){
         return ResponseEntity.ok(categoriesService.findByParent(id));
     }

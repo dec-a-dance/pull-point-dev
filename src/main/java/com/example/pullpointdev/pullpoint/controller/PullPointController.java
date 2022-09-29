@@ -3,6 +3,7 @@ package com.example.pullpointdev.pullpoint.controller;
 import com.example.pullpointdev.pullpoint.model.dto.CreatePullPointReq;
 import com.example.pullpointdev.pullpoint.model.PullPoint;
 import com.example.pullpointdev.pullpoint.service.PullPointService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -20,12 +21,14 @@ public class PullPointController {
     private final PullPointService pullPointService;
 
     @GetMapping()
+    @Operation(description = "get all pull points")
     public ResponseEntity<List<PullPoint>> getAllPullPoints(){
         List<PullPoint> points = pullPointService.getAllPullPoints();
         return ResponseEntity.ok(points);
     }
 
     @PostMapping()
+    @Operation(description = "create new pull point")
     @SneakyThrows
     public ResponseEntity<String> createPP(@RequestBody CreatePullPointReq req){
         if(pullPointService.createPullPoint(req)){
