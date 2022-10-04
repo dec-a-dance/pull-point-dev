@@ -20,8 +20,8 @@ public class WalletService {
     public Wallet createWallet(String credentials, String phone){
         User owner = userRepository.findByPhone(phone).orElseThrow(NullPointerException::new);
         Wallet wallet = new Wallet();
-        wallet.setBalance(0L);
         wallet.setOwner(owner);
+        wallet.setBalance(0L);
         wallet.setHistory(new ArrayList<>());
         wallet.setBankCredentials(credentials);
         wallet = walletRepository.save(wallet);

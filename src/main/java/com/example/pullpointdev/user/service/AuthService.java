@@ -50,7 +50,7 @@ public class AuthService {
         User user = userRepository.findByPhone(phone).orElseThrow(NullPointerException::new);
         boolean result = (Objects.equals(token, user.getToken()));
         if (result){
-            user.setToken("");
+            user.setToken("not a token");
             userRepository.save(user);
         }
         String jwt = jwtUtil.generateToken(user.getPhone());

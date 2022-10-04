@@ -40,4 +40,8 @@ public class JwtUtil {
         System.out.println(token);
         return Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody().getSubject();
     }
+
+    public String parseToken(String auth){
+        return auth.substring(7);
+    }
 }

@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.Constraint;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.util.List;
@@ -27,9 +28,9 @@ public class Wallet {
     private User owner;
 
     @Min(0)
-    private Long balance;
+    private long balance;
 
-    @OneToMany
+    @ManyToMany
     private List<Transaction> history;
 
     private String bankCredentials;
