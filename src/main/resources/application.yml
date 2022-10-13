@@ -1,0 +1,24 @@
+server:
+ port: 2022
+spring:
+ datasource:
+  url: jdbc:postgresql://${PullPoint_DBHost}:${PullPoint_DBPort}/${PullPoint_DBName}
+  username: ${PullPoint_DBUser}
+  password: ${PullPoint_DBPassword}
+  driver-class-name: org.postgresql.Driver
+ jpa:
+  hibernate.ddl-auto: update
+  generate-ddl: true
+  show-sql: true
+ mail:
+  host: smtp.gmail.com
+  username: pullpointdev@gmail.com
+  password: vxezqmlogbbpicae
+ jackson:
+  deserialization:
+   use_java_array_for_json_array: true
+springdoc:
+  swagger-ui:
+   path: /api
+pullpoint:
+  jwtSecret: pUlLp0iNt212aRt1sTaPp1iCatIon

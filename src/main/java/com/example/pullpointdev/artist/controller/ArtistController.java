@@ -5,6 +5,8 @@ import com.example.pullpointdev.artist.model.dto.CreateArtistReq;
 import com.example.pullpointdev.artist.model.dto.SearchArtistsReq;
 import com.example.pullpointdev.artist.model.dto.UpdateArtistReq;
 import com.example.pullpointdev.artist.model.Artist;
+import com.example.pullpointdev.security.JwtFilter;
+import com.example.pullpointdev.security.JwtUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -21,19 +23,22 @@ import java.util.List;
 @Tag(name = "artist", description = "Artist API")
 public class ArtistController {
     private final ArtistService artistService;
+    private final JwtUtil jwtUtil;
 
     @PutMapping()
     @Operation(description = "update artist info")
     @SneakyThrows
-    public ResponseEntity<Artist> updateArtist(@RequestBody UpdateArtistReq req) {
-        return ResponseEntity.ok(artistService.updateArtist(req));
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<Artist> updateArtist(@RequestHeader("Authorization") String auth, @RequestBody UpdateArtistReq req) {
+        return ResponseEntity.ok(artistService.updateArtist(req, jwtUtil.subjectFromToken(jwtUtil.parseToken(auth))));
     }
 
     @PostMapping()
     @Operation(description = "create new artist")
     @SneakyThrows
-    public ResponseEntity<Artist> createArtist(@RequestBody CreateArtistReq req) {
-        return ResponseEntity.ok(artistService.createArtist(req));
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<Artist> createArtist(@RequestHeader("Authorization") String auth, @RequestBody CreateArtistReq req) {
+        return ResponseEntity.ok(artistService.createArtist(req, jwtUtil.subjectFromToken(jwtUtil.parseToken(auth))));
     }
 
     @PostMapping("/search")
@@ -53,7 +58,7 @@ public class ArtistController {
     @SneakyThrows
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Boolean> deleteArtist(@RequestHeader("Authorization") String auth, @PathVariable Long id) {
-        artistService.deleteArtist(id);
+        artistService.deleteArtist(id, jwtUtil.subjectFromToken(jwtUtil.parseToken(auth)));
         return ResponseEntity.ok(true);
     }
 }

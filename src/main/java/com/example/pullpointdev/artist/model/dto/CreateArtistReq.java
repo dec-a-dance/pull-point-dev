@@ -6,8 +6,6 @@ import java.util.List;
 
 @Data
 public class CreateArtistReq {
-    private Long owner;
-
     private String name;
 
     private String description;

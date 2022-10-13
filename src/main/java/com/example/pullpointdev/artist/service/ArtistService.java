@@ -1,5 +1,6 @@
 package com.example.pullpointdev.artist.service;
 
+import com.example.pullpointdev.artist.exception.NotYourArtistException;
 import com.example.pullpointdev.artist.model.dto.CreateArtistReq;
 import com.example.pullpointdev.artist.model.dto.SearchArtistsReq;
 import com.example.pullpointdev.artist.model.dto.UpdateArtistReq;
@@ -15,6 +16,7 @@ import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 @Service
@@ -26,8 +28,12 @@ public class ArtistService {
     private final CategoryRepository categoryRepository;
 
 
-    public Artist updateArtist(UpdateArtistReq req) {
-        Artist artist = artistRepository.findById(req.getId()).orElseThrow(NullPointerException::new);
+    public Artist updateArtist(UpdateArtistReq req, String ownerPhone) {
+        Artist artist = artistRepository.findById(req.getId()).orElseThrow(() -> new NullPointerException("No such artist."));
+        User tokenOwner = userRepository.findByPhone(ownerPhone).orElseThrow(() -> new NullPointerException("No such user as in your token."));
+        if(tokenOwner!= artist.getOwner()){
+            throw new NotYourArtistException("It's not your artist.");
+        }
         artist.setDescription(req.getDescription());
         List<Category> categories = new ArrayList<>();
         artist.setSubcategories(categories);
@@ -57,7 +63,7 @@ public class ArtistService {
             for (Long i : req.getSubcategories()) {
                 subcategories.add(categoryRepository.findById(i).orElseThrow());
             }
-            artists.removeIf(a -> (!a.getSubcategories().containsAll(subcategories)));
+            artists.removeIf(a -> (!new HashSet<>(a.getSubcategories()).containsAll(subcategories)));
         }
 
         return artists;
@@ -67,12 +73,12 @@ public class ArtistService {
         return userRepository.findById(id).getArtists();
     }
 
-    public Artist createArtist(CreateArtistReq req){
-        User user = userRepository.findById(req.getOwner()).orElseThrow();
+    public Artist createArtist(CreateArtistReq req, String ownerPhone){
+        User user = userRepository.findByPhone(ownerPhone).orElseThrow(() -> new NullPointerException("No such user."));
         user.setIsArtist(true);
         user = userRepository.save(user);
         Artist artist = new Artist();
-        artist.setOwner(userRepository.findById(req.getOwner()).orElseThrow());
+        artist.setOwner(user);
         artist = artistRepository.save(artist);
         List<Artist> ar = user.getArtists();
         ar.add(artist);
@@ -86,12 +92,16 @@ public class ArtistService {
         update.setSubcategories(req.getSubcategories());
         update.setName(req.getName());
         update.setDescription(req.getDescription());
-        artist = updateArtist(update);
+        artist = updateArtist(update, user.getPhone());
         return artist;
     }
 
-    public void deleteArtist(long id){
-        Artist artist = artistRepository.findById(id).orElseThrow(NullPointerException::new);
+    public void deleteArtist(long id, String ownerPhone){
+        Artist artist = artistRepository.findById(id).orElseThrow(() -> new NullPointerException("No such artist"));
+        User tokenOwner = userRepository.findByPhone(ownerPhone).orElseThrow(() -> new NullPointerException("No such user."));
+        if (tokenOwner != artist.getOwner()){
+            throw new NotYourArtistException("It's not your artist");
+        }
         User user = artist.getOwner();
         user.getArtists().remove(artist);
         userRepository.save(user);

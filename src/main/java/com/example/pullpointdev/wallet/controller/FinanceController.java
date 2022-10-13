@@ -19,7 +19,7 @@ public class FinanceController {
 
     @PostMapping("/input")
     @SneakyThrows
-    public Transaction input(@RequestHeader("Authorization") String auth, @RequestBody InputOutputReq req){
+        public Transaction input(@RequestHeader("Authorization") String auth, @RequestBody InputOutputReq req){
         return financeService.currencyInput(jwtUtil.subjectFromToken(jwtUtil.parseToken(auth)), req.getSum());
     }
 

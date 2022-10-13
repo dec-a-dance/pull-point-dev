@@ -1,5 +1,6 @@
 package com.example.pullpointdev.pullpoint.service;
 
+import com.example.pullpointdev.artist.exception.NotYourArtistException;
 import com.example.pullpointdev.pullpoint.model.dto.CreatePullPointReq;
 import com.example.pullpointdev.artist.model.Artist;
 import com.example.pullpointdev.category.model.Category;
@@ -7,6 +8,7 @@ import com.example.pullpointdev.pullpoint.model.PullPoint;
 import com.example.pullpointdev.artist.repository.ArtistRepository;
 import com.example.pullpointdev.category.repository.CategoryRepository;
 import com.example.pullpointdev.pullpoint.repository.PullPointRepository;
+import com.example.pullpointdev.user.model.User;
 import com.example.pullpointdev.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -28,10 +30,15 @@ public class PullPointService {
         return pullPointRepository.findAll();
     }
 
-    public boolean createPullPoint(CreatePullPointReq req) throws ParseException {
+    public boolean createPullPoint(CreatePullPointReq req, String ownerPhone) throws ParseException {
         SimpleDateFormat format = new SimpleDateFormat();
         format.applyPattern("dd.MM.yyyy:hh.mm");
         PullPoint pp = new PullPoint();
+        Artist artist = artistRepository.findById(req.getOwner()).orElseThrow(() -> new NullPointerException("No such artist."));
+        User tokenOwner = userRepository.findByPhone(ownerPhone).orElseThrow(() -> new NullPointerException("No such user."));
+        if (tokenOwner != artist.getOwner()){
+            throw new NotYourArtistException("It's not your artist.");
+        }
         List<Artist> artists;
         List<Category> subcategories;
         System.out.println(req.subcategories);
@@ -56,7 +63,7 @@ public class PullPointService {
         pp.setCategory(categoryRepository.findById(req.getCategory()).orElseThrow());
         pp.setStartTime(format.parse(req.getStartTime()));
         pp.setEndTime(format.parse(req.getEndTime()));
-        pp.setOwner(artistRepository.findById(req.getOwner()).orElseThrow());
+        pp.setOwner(artist);
         pullPointRepository.save(pp);
         return true;
     }
