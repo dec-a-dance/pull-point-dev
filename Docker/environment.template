@@ -1,0 +1,5 @@
+PullPoint_DBHost="vault://pull-point/data/postgres/$PREFIX:host"
+PullPoint_DBPort="vault://pull-point/data/postgres/$PREFIX:port"
+PullPoint_DBUser="vault://pull-point/data/postgres/$PREFIX:user"
+PullPoint_DBPassword="vault://pull-point/data/postgres/$PREFIX:password"
+PullPoint_DBName="vault://pull-point/data/postgres/$PREFIX:dbName"
