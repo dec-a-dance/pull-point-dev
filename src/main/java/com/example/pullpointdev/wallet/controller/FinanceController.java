@@ -6,6 +6,7 @@ import com.example.pullpointdev.wallet.model.Transaction;
 import com.example.pullpointdev.wallet.model.dto.InputOutputReq;
 import com.example.pullpointdev.wallet.model.dto.TransferReq;
 import com.example.pullpointdev.wallet.service.FinanceService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/finance")
+@Tag(name = "finance", description = "Finance API")
 public class FinanceController {
     private final FinanceService financeService;
     private final JwtUtil jwtUtil;
