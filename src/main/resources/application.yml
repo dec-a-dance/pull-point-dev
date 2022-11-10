@@ -1,5 +1,5 @@
 server:
- port: 2023
+ port: 2022
 spring:
  datasource:
   url: jdbc:postgresql://${PullPoint_DBHost}:${PullPoint_DBPort}/${PullPoint_DBName}
