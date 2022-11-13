@@ -17,6 +17,10 @@ spring:
   host: smtp.gmail.com
   username: pullpointdev@gmail.com
   password: vxezqmlogbbpicae
+  properties:
+    smtp:
+     starttls:
+      enable: true
  jackson:
   deserialization:
    use_java_array_for_json_array: true
