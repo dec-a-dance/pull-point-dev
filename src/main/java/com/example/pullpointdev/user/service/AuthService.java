@@ -25,7 +25,7 @@ public class AuthService {
     private final JwtUtil jwtUtil;
     private final JavaMailSender jms;
 
-    public void generateAndSendToken(String phone){
+    public String generateAndSendToken(String phone){
         String newToken = getRandomString(6);
         User user = userRepository.findByPhone(phone).orElse(null);
         if (user == null){
@@ -36,7 +36,7 @@ public class AuthService {
             userRepository.save(user);
         }
         user.setToken(newToken);
-        SimpleMailMessage msg = new SimpleMailMessage();
+        /*SimpleMailMessage msg = new SimpleMailMessage();
         msg.setTo(phone);
         msg.setSubject("Код подтверждения");
         String text = String.format("Здравствуйте!\n\n" +
@@ -44,6 +44,8 @@ public class AuthService {
                         "С уважением, команда Pull Point.", newToken);
         msg.setText(text);
         jms.send(msg);
+        */
+        return newToken;
     }
 
     public ApproveTokenResp checkToken(String phone, String token){

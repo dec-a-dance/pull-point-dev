@@ -25,8 +25,8 @@ public class UserController {
     @Operation(description = "send a code to user")
     @SneakyThrows
     public ResponseEntity<String> sendToken(@RequestBody SendTokenReq req){
-        authService.generateAndSendToken(req.getPhone());
-        return ResponseEntity.ok("Token has been sent to " + req.getPhone());
+        String resp = authService.generateAndSendToken(req.getPhone());
+        return ResponseEntity.ok("Your code is: " + resp);
     }
 
     @PostMapping("/verify")
