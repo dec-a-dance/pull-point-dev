@@ -1,9 +1,6 @@
 package com.example.pullpointdev.user.controller;
 
-import com.example.pullpointdev.user.model.dto.ApproveTokenReq;
-import com.example.pullpointdev.user.model.dto.ApproveTokenResp;
-import com.example.pullpointdev.user.model.dto.SendTokenReq;
-import com.example.pullpointdev.user.model.dto.UpdateUserReq;
+import com.example.pullpointdev.user.model.dto.*;
 import com.example.pullpointdev.user.model.User;
 import com.example.pullpointdev.user.service.AuthService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -24,9 +21,11 @@ public class UserController {
     @PostMapping("/code")
     @Operation(description = "send a code to user")
     @SneakyThrows
-    public ResponseEntity<String> sendToken(@RequestBody SendTokenReq req){
+    public ResponseEntity<TokenHandler> sendToken(@RequestBody SendTokenReq req){
         String resp = authService.generateAndSendToken(req.getPhone());
-        return ResponseEntity.ok("Your code is: " + resp);
+        TokenHandler tknHndlr = new TokenHandler();
+        tknHndlr.setCode(resp);
+        return ResponseEntity.ok(tknHndlr);
     }
 
     @PostMapping("/verify")
