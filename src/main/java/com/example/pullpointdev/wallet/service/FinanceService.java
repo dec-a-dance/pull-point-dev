@@ -12,6 +12,7 @@ import com.example.pullpointdev.wallet.repository.TransactionRepository;
 import com.example.pullpointdev.wallet.repository.WalletRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
+import org.apache.tomcat.jni.Time;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.TransactionStatus;
@@ -19,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
 
+import java.util.Date;
 import java.util.List;
 
 //todo bank service
@@ -36,6 +38,7 @@ public class FinanceService {
         Wallet wallet = walletRepository.findByOwner(owner).orElseThrow(() -> new NullPointerException("No wallet found."));
         Transaction transaction = new Transaction();
         transaction.setType(TransactionType.INPUT);
+        transaction.setTimestamp(new Date());
         transaction.setSum(sum);
         transaction.setOwner(wallet.getOwner());
         transaction = transactionRepository.save(transaction);
@@ -56,6 +59,7 @@ public class FinanceService {
         wallet.setBalance(wallet.getBalance() - sum);
         Transaction transaction = new Transaction();
         transaction.setSum(sum);
+        transaction.setTimestamp(new Date());
         transaction.setType(TransactionType.TRANSFER);
         transaction.setOwner(wallet.getOwner());
         transaction.setReceiver(receiver);
@@ -68,6 +72,4 @@ public class FinanceService {
         }
         return transaction;
     }
-
-
 }

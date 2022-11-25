@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
+import java.sql.Time;
+import java.util.Date;
 
 @Data
 @Entity
@@ -24,6 +26,8 @@ public class Transaction {
     @ManyToOne
     @JsonIgnore
     private User owner;
+
+    private Date timestamp;
 
     private Long sum;
 

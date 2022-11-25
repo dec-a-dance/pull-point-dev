@@ -9,7 +9,9 @@ import com.example.pullpointdev.wallet.repository.WalletRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.validation.constraints.Null;
 import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -28,5 +30,13 @@ public class WalletService {
         owner.setWallet(wallet);
         userRepository.save(owner);
         return wallet;
+    }
+
+    public Wallet getWallet(String userPhone){
+        return walletRepository.findByOwner(userRepository.findByPhone(userPhone).orElseThrow(() -> new NullPointerException("User with such id not found."))).orElseThrow(() -> new NullPointerException("No wallet for this user created."));
+    }
+
+    public List<Transaction> getTransactionHistory(String userPhone){
+        return walletRepository.findByOwner(userRepository.findByPhone(userPhone).orElseThrow(() -> new NullPointerException("Such user doesn't exist."))).orElseThrow(() -> new NullPointerException("no wallet with such id")).getHistory();
     }
 }
