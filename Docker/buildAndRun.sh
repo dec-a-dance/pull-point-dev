@@ -78,7 +78,7 @@ docker run -d \
         --env PREFIX=$PREFIX \
 	--hostname="$PROJECT-$PREFIX-$BASE_NAME" \
         "$PROJECT/$BASE_NAME:$VERSION"\
-  --restart=always
+  --restart always
 echo "# *******************************************"
 echo "#  Completed: starting new container"
 echo "# *******************************************"
