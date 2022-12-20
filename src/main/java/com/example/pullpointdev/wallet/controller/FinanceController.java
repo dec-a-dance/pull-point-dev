@@ -30,4 +30,10 @@ public class FinanceController {
     public Transaction transfer(@RequestHeader("Authorization") String auth, @RequestBody TransferReq req){
         return financeService.transfer(jwtUtil.subjectFromToken(jwtUtil.parseToken(auth)), req.getSum(), req.getArtistName());
     }
+
+    @PostMapping("/output")
+    @SneakyThrows
+    public Transaction output(@RequestHeader("Authorization") String auth, @RequestBody InputOutputReq req){
+        return financeService.output(jwtUtil.subjectFromToken(jwtUtil.parseToken(auth)), req.getSum());
+    }
 }

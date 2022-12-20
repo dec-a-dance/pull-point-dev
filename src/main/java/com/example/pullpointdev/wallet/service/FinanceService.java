@@ -77,6 +77,18 @@ public class FinanceService {
     public Transaction output(String userPhone, Long sum){
         User owner = userRepository.findByPhone(userPhone).orElseThrow(() -> new NullPointerException("No user found."));
         Wallet wallet = walletRepository.findByOwner(owner).orElseThrow(() -> new NullPointerException("No wallet found."));
-        return null;
+        Transaction transaction = new Transaction();
+        transaction.setType(TransactionType.OUTPUT);
+        transaction.setTimestamp(new Date());
+        transaction.setSum(sum);
+        transaction.setOwner(wallet.getOwner());
+        transaction = transactionRepository.save(transaction);
+        wallet.setBalance(wallet.getBalance() - sum);
+        wallet.getHistory().add(transaction);
+        wallet = walletRepository.save(wallet);
+        if (wallet.getBalance() < 0) {
+            throw new IncorrectBalanceException("Not enough money");
+        }
+        return transaction;
     }
 }

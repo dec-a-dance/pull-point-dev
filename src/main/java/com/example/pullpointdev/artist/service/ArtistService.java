@@ -107,4 +107,11 @@ public class ArtistService {
         userRepository.save(user);
         artistRepository.delete(artist);
     }
+
+    public boolean checkUsername(String username){
+        if (artistRepository.findByName(username).orElse(null) == null){
+            return true;
+        }
+        else return false;
+    }
 }

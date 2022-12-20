@@ -78,5 +78,11 @@ public class AuthService {
         return sb.toString();
     }
 
+    public boolean checkUsername(String username){
+        if (userRepository.findByUsername(username).orElse(null) == null){
+            return true;
+        }
+        else return false;
+    }
 
 }

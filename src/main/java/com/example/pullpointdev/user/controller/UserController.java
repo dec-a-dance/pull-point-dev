@@ -42,4 +42,10 @@ public class UserController {
     public ResponseEntity<User> updateUser(@RequestBody UpdateUserReq req){
         return ResponseEntity.ok(authService.updateUser(req));
     }
+
+    @GetMapping("/check/{name}")
+    @Operation(description = "check if username free")
+    public ResponseEntity<Boolean> checkName(@PathVariable String name){
+        return ResponseEntity.ok(authService.checkUsername(name));
+    }
 }

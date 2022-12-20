@@ -61,4 +61,10 @@ public class ArtistController {
         artistService.deleteArtist(id, jwtUtil.subjectFromToken(jwtUtil.parseToken(auth)));
         return ResponseEntity.ok(true);
     }
+
+    @GetMapping("/check/{name}")
+    @Operation(description = "check if username free")
+    public ResponseEntity<Boolean> checkName(@PathVariable String name){
+        return ResponseEntity.ok(artistService.checkUsername(name));
+    }
 }
