@@ -66,6 +66,10 @@ public class AuthService {
         return user;
     }
 
+    public ApproveTokenResp refresh(String phone){
+        return new ApproveTokenResp(true, jwtUtil.generateToken(phone), userRepository.findByPhone(phone).orElseThrow(() -> new NullPointerException("no such user")));
+    }
+
 
     public String getRandomString(int length){
         String str="0123456789";
