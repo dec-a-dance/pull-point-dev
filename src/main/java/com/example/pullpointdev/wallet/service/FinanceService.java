@@ -72,4 +72,11 @@ public class FinanceService {
         }
         return transaction;
     }
+
+    @Transactional(rollbackFor = {IncorrectBalanceException.class})
+    public Transaction output(String userPhone, Long sum){
+        User owner = userRepository.findByPhone(userPhone).orElseThrow(() -> new NullPointerException("No user found."));
+        Wallet wallet = walletRepository.findByOwner(owner).orElseThrow(() -> new NullPointerException("No wallet found."));
+        return null;
+    }
 }

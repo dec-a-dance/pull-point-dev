@@ -4,6 +4,7 @@ import com.example.pullpointdev.security.JwtUtil;
 import com.example.pullpointdev.wallet.model.Transaction;
 import com.example.pullpointdev.wallet.model.Wallet;
 import com.example.pullpointdev.wallet.model.dto.CreateWalletReq;
+import com.example.pullpointdev.wallet.model.dto.TransactionDTO;
 import com.example.pullpointdev.wallet.service.WalletService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -33,7 +34,7 @@ public class WalletController {
 
     @GetMapping()
     @SneakyThrows
-    @Operation(description = "get a wallet by owner id")
+    @Operation(description = "get a wallet info")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Wallet> getWallet(@RequestHeader("Authorization") String auth){
         return ResponseEntity.ok(walletService.getWallet(jwtUtil.subjectFromToken(jwtUtil.parseToken(auth))));
@@ -41,9 +42,9 @@ public class WalletController {
 
     @GetMapping("/history")
     @SneakyThrows
-    @Operation(description = "get a wallet by owner id")
+    @Operation(description = "get transaction history")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<List<Transaction>> getTransactionHistory(@RequestHeader("Authorization") String auth){
+    public ResponseEntity<List<TransactionDTO>> getTransactionHistory(@RequestHeader("Authorization") String auth){
         return ResponseEntity.ok(walletService.getTransactionHistory(jwtUtil.subjectFromToken(jwtUtil.parseToken(auth))));
     }
 

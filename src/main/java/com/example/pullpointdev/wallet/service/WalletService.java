@@ -3,8 +3,11 @@ package com.example.pullpointdev.wallet.service;
 import com.example.pullpointdev.user.model.User;
 import com.example.pullpointdev.user.repository.UserRepository;
 import com.example.pullpointdev.wallet.model.Transaction;
+import com.example.pullpointdev.wallet.model.TransactionType;
 import com.example.pullpointdev.wallet.model.Wallet;
 import com.example.pullpointdev.wallet.model.dto.CreateWalletReq;
+import com.example.pullpointdev.wallet.model.dto.TransactionDTO;
+import com.example.pullpointdev.wallet.model.dto.TransactionDirection;
 import com.example.pullpointdev.wallet.repository.WalletRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -36,7 +39,29 @@ public class WalletService {
         return walletRepository.findByOwner(userRepository.findByPhone(userPhone).orElseThrow(() -> new NullPointerException("User with such id not found."))).orElseThrow(() -> new NullPointerException("No wallet for this user created."));
     }
 
-    public List<Transaction> getTransactionHistory(String userPhone){
-        return walletRepository.findByOwner(userRepository.findByPhone(userPhone).orElseThrow(() -> new NullPointerException("Such user doesn't exist."))).orElseThrow(() -> new NullPointerException("no wallet with such id")).getHistory();
+    public List<TransactionDTO> getTransactionHistory(String userPhone){
+        User owner = userRepository.findByPhone(userPhone).orElseThrow(() -> new NullPointerException("Such user doesn't exist."));
+        List<Transaction> trans = walletRepository.findByOwner(owner).orElseThrow(() -> new NullPointerException("no wallet with such id")).getHistory();
+        List<TransactionDTO> dtos = new ArrayList<>();
+        trans.forEach(t -> {
+            TransactionDTO dto = new TransactionDTO();
+            if (t.getReceiver()!=null && t.getOwner().equals(owner)){
+                dto.setDir(TransactionDirection.OUT);
+                dto.setSub(t.getReceiver().getOwner());
+            }
+            else if (t.getType()== TransactionType.OUTPUT){
+                dto.setDir(TransactionDirection.OUT);
+            }
+            else{
+                dto.setDir(TransactionDirection.IN);
+                if (t.getReceiver()!=null){
+                    dto.setSub(t.getOwner());
+                }
+            }
+            dto.setType(t.getType());
+            dto.setSum(t.getSum());
+            dto.setTimestamp(t.getTimestamp());
+        });
+        return dtos;
     }
 }
