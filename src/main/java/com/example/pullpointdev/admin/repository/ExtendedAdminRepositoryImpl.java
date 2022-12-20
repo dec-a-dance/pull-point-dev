@@ -29,7 +29,6 @@ public class ExtendedAdminRepositoryImpl implements ExtendedAdminRepository {
         query.append("delete from artist_subcategories;");
         query.append("update artist set category_id=null where id>0;");
         query.append("update pull_point set category_id=null where id>0;");
-        query.append("delete from category;");
         query.append("delete from user_data_artists;");
         query.append("delete from artist;");
         query.append("delete from user_data_favourites;");
