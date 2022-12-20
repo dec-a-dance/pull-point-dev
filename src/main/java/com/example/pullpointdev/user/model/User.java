@@ -32,6 +32,7 @@ public class User implements UserDetails {
 
     @Column(name="favourites")
     @OneToMany
+    @JsonIgnore
     private List<Artist> favourites;
 
     @Column(name="is_artist")

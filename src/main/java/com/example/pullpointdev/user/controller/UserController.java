@@ -1,5 +1,6 @@
 package com.example.pullpointdev.user.controller;
 
+import com.example.pullpointdev.security.JwtUtil;
 import com.example.pullpointdev.user.model.dto.*;
 import com.example.pullpointdev.user.model.User;
 import com.example.pullpointdev.user.service.AuthService;
@@ -9,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 @Tag(name="user", description = "Users API")
 public class UserController {
     private final AuthService authService;
+    private final JwtUtil jwtUtil;
 
     @PostMapping("/code")
     @Operation(description = "send a code to user")
@@ -45,7 +48,16 @@ public class UserController {
 
     @GetMapping("/check/{name}")
     @Operation(description = "check if username free")
+    @SneakyThrows
     public ResponseEntity<Boolean> checkName(@PathVariable String name){
         return ResponseEntity.ok(authService.checkUsername(name));
     }
+
+    @PostMapping("/refresh")
+    @SneakyThrows
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<ApproveTokenResp> refresh(@RequestHeader("Authorization") String auth){
+        return ResponseEntity.ok(authService.refresh(jwtUtil.subjectFromToken(jwtUtil.parseToken(auth))));
+    }
+
 }
