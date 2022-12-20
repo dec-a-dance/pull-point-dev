@@ -1,5 +1,6 @@
 package com.example.pullpointdev.user.service;
 
+import com.example.pullpointdev.artist.model.Artist;
 import com.example.pullpointdev.security.JwtUtil;
 import com.example.pullpointdev.security.Role;
 import com.example.pullpointdev.user.model.dto.ApproveTokenResp;
@@ -13,6 +14,7 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Random;
 
@@ -87,6 +89,10 @@ public class AuthService {
             return true;
         }
         else return false;
+    }
+
+    public List<Artist> getArtists(String phone){
+        return userRepository.findByPhone(phone).orElseThrow(() -> new NullPointerException("no such user")).getArtists();
     }
 
 }

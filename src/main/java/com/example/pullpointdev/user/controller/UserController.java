@@ -1,5 +1,6 @@
 package com.example.pullpointdev.user.controller;
 
+import com.example.pullpointdev.artist.model.Artist;
 import com.example.pullpointdev.security.JwtUtil;
 import com.example.pullpointdev.user.model.dto.*;
 import com.example.pullpointdev.user.model.User;
@@ -12,6 +13,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -60,4 +63,10 @@ public class UserController {
         return ResponseEntity.ok(authService.refresh(jwtUtil.subjectFromToken(jwtUtil.parseToken(auth))));
     }
 
+    @GetMapping("/artists")
+    @SneakyThrows
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<List<Artist>> getArtists(@RequestHeader("Authorization") String auth){
+        return ResponseEntity.ok(authService.getArtists(jwtUtil.subjectFromToken(jwtUtil.parseToken(auth))));
+    }
 }

@@ -39,6 +39,7 @@ public class User implements UserDetails {
     private Boolean isArtist;
 
     @OneToMany
+    @JsonIgnore
     private List<Artist> artists;
 
     @OneToOne
