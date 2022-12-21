@@ -22,7 +22,7 @@ public class FavouritesService {
     }
 
     public void addToFavourites(String phone, Long artistId){
-        User owner =userRepository.findByPhone(phone).orElseThrow(() -> new NullPointerException("no such user"));
+        User owner = userRepository.findByPhone(phone).orElseThrow(() -> new NullPointerException("no such user"));
         Artist artist = artistRepository.findById(artistId).orElseThrow(() -> new NullPointerException("no such artists"));
         List<Artist> list = owner.getFavourites();
         if (list.contains(artist)){
@@ -31,5 +31,16 @@ public class FavouritesService {
         list.add(artist);
         owner.setFavourites(list);
         userRepository.save(owner);
+    }
+
+    public void removeFromFavourites(String phone, Long artistId){
+        User owner = userRepository.findByPhone(phone).orElseThrow(() -> new NullPointerException("no such user"));
+        Artist artist = artistRepository.findById(artistId).orElseThrow(() -> new NullPointerException("no such artists"));
+        List<Artist> list = owner.getFavourites();
+        if (list.contains(artist)){
+            list.remove(artist);
+            return;
+        }
+        throw new NullPointerException("not in favs");
     }
 }

@@ -61,6 +61,7 @@ public class WalletService {
             dto.setType(t.getType());
             dto.setSum(t.getSum());
             dto.setTimestamp(t.getTimestamp());
+            dtos.add(dto);
         });
         return dtos;
     }

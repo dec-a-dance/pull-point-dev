@@ -31,6 +31,7 @@ public class Wallet {
     private long balance;
 
     @ManyToMany
+    @JsonIgnore
     private List<Transaction> history;
 
     private String bankCredentials;

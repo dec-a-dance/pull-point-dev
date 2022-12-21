@@ -34,4 +34,12 @@ public class FavouritesController {
         service.addToFavourites(jwtUtil.subjectFromToken(jwtUtil.parseToken(auth)), artistId);
         return ResponseEntity.ok("added");
     }
+
+    @DeleteMapping("/{artistId}")
+    @PreAuthorize("isAuthenticated()")
+    @Operation(description = "add artist to favourites")
+    public ResponseEntity deleteFromFavs(@RequestHeader("Authorization") String auth, @PathVariable Long artistId){
+        service.removeFromFavourites(jwtUtil.subjectFromToken(jwtUtil.parseToken(auth)), artistId);
+        return ResponseEntity.ok("removed");
+    }
 }
