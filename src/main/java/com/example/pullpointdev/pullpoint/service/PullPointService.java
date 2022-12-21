@@ -32,7 +32,7 @@ public class PullPointService {
 
     public boolean createPullPoint(CreatePullPointReq req, String ownerPhone) throws ParseException {
         SimpleDateFormat format = new SimpleDateFormat();
-        format.applyPattern("dd.MM.yyyy:hh.mm");
+        format.applyPattern("dd.MM.yyyy:HH.mm");
         PullPoint pp = new PullPoint();
         Artist artist = artistRepository.findById(req.getOwner()).orElseThrow(() -> new NullPointerException("No such artist."));
         User tokenOwner = userRepository.findByPhone(ownerPhone).orElseThrow(() -> new NullPointerException("No such user."));
