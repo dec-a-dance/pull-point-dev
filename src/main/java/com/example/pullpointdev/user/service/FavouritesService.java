@@ -41,6 +41,7 @@ public class FavouritesService {
             list.remove(artist);
             return;
         }
+        owner.setFavourites(list);
         throw new NullPointerException("not in favs");
     }
 }
