@@ -40,6 +40,7 @@ public class FavouritesService {
         if (list.contains(artist)){
             list.remove(artist);
             owner.setFavourites(list);
+            userRepository.save(owner);
             return;
         }
         throw new NullPointerException("not in favs");
