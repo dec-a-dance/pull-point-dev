@@ -39,9 +39,9 @@ public class FavouritesService {
         List<Artist> list = owner.getFavourites();
         if (list.contains(artist)){
             list.remove(artist);
+            owner.setFavourites(list);
             return;
         }
-        owner.setFavourites(list);
         throw new NullPointerException("not in favs");
     }
 }
