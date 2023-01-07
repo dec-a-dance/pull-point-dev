@@ -31,7 +31,7 @@ public class User implements UserDetails {
     private String phone;
 
     @Column(name="favourites")
-    @OneToMany
+    @ManyToMany
     @JsonIgnore
     private List<Artist> favourites;
 
