@@ -24,4 +24,4 @@ springdoc:
   swagger-ui:
    path: /api
 pullpoint:
-  jwtSecret: pUlLp0iNt212aRt1sTaPp1iCatIon
+  jwtSecret: pUlLp0iNt212aRt1sTaPp1iCatIon1
