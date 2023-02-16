@@ -2,6 +2,7 @@ package com.example.pullpointdev.pullpoint.model;
 
 import com.example.pullpointdev.artist.model.Artist;
 import com.example.pullpointdev.category.model.Category;
+import com.example.pullpointdev.user.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -37,6 +38,9 @@ public class PullPoint {
 
     @ManyToOne
     Artist owner;
+
+    @OneToOne
+    User ownerAccount;
 
     @OneToMany
     List<Artist> artists;

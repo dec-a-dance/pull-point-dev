@@ -103,6 +103,14 @@
             <artifactId>jackson-mapper-lgpl</artifactId>
             <version>1.9.13</version>
         </dependency>
+
+        <!-- Firebase -->
+        <dependency>
+            <groupId>com.google.firebase</groupId>
+            <artifactId>firebase-admin</artifactId>
+            <version>9.1.1</version>
+        </dependency>
+
     </dependencies>
 
 

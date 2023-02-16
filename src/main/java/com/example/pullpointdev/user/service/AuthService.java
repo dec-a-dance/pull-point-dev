@@ -64,6 +64,7 @@ public class AuthService {
     public User updateUser(UpdateUserReq req){
         User user = userRepository.findByPhone(req.getPhone()).orElseThrow(NullPointerException::new);
         user.setUsername(req.getUsername());
+        user.setNotificationsToken(req.getNotificationsToken());
         user = userRepository.save(user);
         return user;
     }

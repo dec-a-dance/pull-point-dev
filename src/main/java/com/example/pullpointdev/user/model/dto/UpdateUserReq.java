@@ -10,5 +10,7 @@ public class UpdateUserReq {
 
     private String phone;
 
+    private String notificationsToken;
+
     //private List<Artist> favourites;
 }

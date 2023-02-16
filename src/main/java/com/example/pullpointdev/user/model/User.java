@@ -48,6 +48,9 @@ public class User implements UserDetails {
     @Nullable
     private String token;
 
+    @Nullable
+    private String notificationsToken;
+
 
     @JsonIgnore
     @Override

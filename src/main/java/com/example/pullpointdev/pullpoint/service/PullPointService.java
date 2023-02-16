@@ -1,6 +1,8 @@
 package com.example.pullpointdev.pullpoint.service;
 
 import com.example.pullpointdev.artist.exception.NotYourArtistException;
+import com.example.pullpointdev.notification.model.PlannedNotification;
+import com.example.pullpointdev.notification.repository.PlannedNotificationRepository;
 import com.example.pullpointdev.pullpoint.model.dto.CreatePullPointReq;
 import com.example.pullpointdev.artist.model.Artist;
 import com.example.pullpointdev.category.model.Category;
@@ -25,6 +27,7 @@ public class PullPointService {
     private final ArtistRepository artistRepository;
     private final UserRepository userRepository;
     private final CategoryRepository categoryRepository;
+    private final PlannedNotificationRepository plannedNotificationRepository;
 
     public List<PullPoint> getAllPullPoints(){
         return pullPointRepository.findAll();
@@ -65,6 +68,15 @@ public class PullPointService {
         pp.setEndTime(format.parse(req.getEndTime()));
         pp.setOwner(artist);
         pullPointRepository.save(pp);
+        PlannedNotification not = new PlannedNotification();
+        not.setReceiver(artist.getOwner());
+        not.setTime(pp.getEndTime());
+        plannedNotificationRepository.save(not);
         return true;
+    }
+    public void closePP(String phone){
+        User rec = userRepository.findByPhone(phone).orElseThrow(() -> new NullPointerException("no such user"));
+        pullPointRepository.deleteByOwnerAccount(rec);
+        plannedNotificationRepository.deleteByReceiver(rec);
     }
 }
