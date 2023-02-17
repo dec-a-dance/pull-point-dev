@@ -35,11 +35,12 @@ public class PlannedChecker {
     @SneakyThrows
     @Transactional
     public void checkPlannedNots() {
-        log.info("checking planned notifications at time " + new Date() + " moskow (tipa) " + Date.from(LocalDateTime.now().atZone(ZoneId.of("Europe/Moscow")).toInstant()));
+        //очень костыльно ну да черт с ним
+        Date now = Date.from(LocalDateTime.now().atZone(ZoneId.of("Europe/Moscow")).plusHours(6).toInstant());
         List<PlannedNotification> nots = plannedNotificationRepository.findAll();
         if(!nots.isEmpty()) {
             for (PlannedNotification not : nots) {
-                if(not.getTime().getTime() < Date.from(LocalDateTime.now().atZone(ZoneId.of("Europe/Moscow")).toInstant()).getTime()) {
+                if(not.getTime().getTime() < now.getTime()) {
                     if (not.getType() == PlannedNotificationType.PP_END) {
                         pullPointService.closePP(not.getReceiver().getPhone());
                     }
