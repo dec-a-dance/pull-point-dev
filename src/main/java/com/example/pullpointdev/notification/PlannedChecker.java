@@ -14,6 +14,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.sql.Time;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
@@ -35,11 +36,13 @@ public class PlannedChecker {
         List<PlannedNotification> nots = plannedNotificationRepository.findAll();
         if(!nots.isEmpty()) {
             for (PlannedNotification not : nots) {
-                if (not.getType() == PlannedNotificationType.PP_END){
-                    pullPointService.closePP(not.getReceiver().getPhone());
+                if(not.getTime().getTime() < new Date().getTime()) {
+                    if (not.getType() == PlannedNotificationType.PP_END) {
+                        pullPointService.closePP(not.getReceiver().getPhone());
+                    }
+                    notificationService.sendNotification(not.getReceiver(), not.getArtist(), not.getType());
+                    plannedNotificationRepository.delete(not);
                 }
-                notificationService.sendNotification(not.getReceiver(), not.getArtist(), not.getType());
-                plannedNotificationRepository.delete(not);
             }
         }
     }
