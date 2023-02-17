@@ -41,12 +41,12 @@ public class NotificationService {
                 log.info("Successfully sent end message: " + response);
                 break;
             case SUBSCRIBE_CREATE:
-                message = Message.builder().setNotification(Notification.builder().setTitle(artistName + "создал выступление!").setBody(artistName + " создал выступление! Заглянешь на огонек?").build()).setTopic(artistName).build();
+                message = Message.builder().setNotification(Notification.builder().setTitle(artistName + " создал выступление!").setBody(artistName + " создал выступление! Заглянешь на огонек?").build()).setTopic(artistName).build();
                 response = FirebaseMessaging.getInstance().send(message);
                 log.info("Successfully sent create message: " + response);
                 break;
             case SUBSCRIBE_START:
-                message = Message.builder().setNotification(Notification.builder().setTitle(artistName + "начинает выступление!").setBody(artistName + " начинает выступать! Поторопись, а то всё пропустишь.").build()).setTopic(artistName).build();
+                message = Message.builder().setNotification(Notification.builder().setTitle(artistName + " начинает выступление!").setBody(artistName + " начинает выступать! Поторопись, а то всё пропустишь.").build()).setTopic(artistName).build();
                 response = FirebaseMessaging.getInstance().send(message);
                 log.info("Successfully sent start message: " + response);
                 break;

@@ -15,6 +15,9 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.sql.Time;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
@@ -36,7 +39,7 @@ public class PlannedChecker {
         List<PlannedNotification> nots = plannedNotificationRepository.findAll();
         if(!nots.isEmpty()) {
             for (PlannedNotification not : nots) {
-                if(not.getTime().getTime() < new Date().getTime()) {
+                if(not.getTime().getTime() < Date.from(LocalDateTime.now().atZone(ZoneId.of("Europe/Moscow")).toInstant()).getTime()) {
                     if (not.getType() == PlannedNotificationType.PP_END) {
                         pullPointService.closePP(not.getReceiver().getPhone());
                     }
