@@ -35,7 +35,7 @@ public class PlannedChecker {
     @SneakyThrows
     @Transactional
     public void checkPlannedNots() {
-        log.info("checking planned notifications");
+        log.info("checking planned notifications at time " + new Date() + " moskow (tipa) " + Date.from(LocalDateTime.now().atZone(ZoneId.of("Europe/Moscow")).toInstant()).getTime());
         List<PlannedNotification> nots = plannedNotificationRepository.findAll();
         if(!nots.isEmpty()) {
             for (PlannedNotification not : nots) {
