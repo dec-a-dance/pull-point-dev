@@ -2,6 +2,7 @@ package com.example.pullpointdev.pullpoint.service;
 
 import com.example.pullpointdev.artist.exception.NotYourArtistException;
 import com.example.pullpointdev.notification.model.PlannedNotification;
+import com.example.pullpointdev.notification.model.PlannedNotificationType;
 import com.example.pullpointdev.notification.repository.PlannedNotificationRepository;
 import com.example.pullpointdev.pullpoint.model.dto.CreatePullPointReq;
 import com.example.pullpointdev.artist.model.Artist;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Service;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -59,6 +61,7 @@ public class PullPointService {
             pp.setSubcategories(subcategories);
         }
         pp.setName(req.getName());
+        pp.setOwnerAccount(artist.getOwner());
         pp.setAddress(req.getAddress());
         pp.setLatitude(req.getLatitude());
         pp.setLongitude(req.getLongitude());
@@ -68,15 +71,45 @@ public class PullPointService {
         pp.setEndTime(format.parse(req.getEndTime()));
         pp.setOwner(artist);
         pullPointRepository.save(pp);
-        PlannedNotification not = new PlannedNotification();
-        not.setReceiver(artist.getOwner());
-        not.setTime(pp.getEndTime());
-        plannedNotificationRepository.save(not);
+        generateNots(artist, pp);
         return true;
     }
     public void closePP(String phone){
         User rec = userRepository.findByPhone(phone).orElseThrow(() -> new NullPointerException("no such user"));
         pullPointRepository.deleteByOwnerAccount(rec);
         plannedNotificationRepository.deleteByReceiver(rec);
+    }
+
+    private void generateNots(Artist artist, PullPoint pp){
+        List<PlannedNotification> nots = new ArrayList<>();
+        //generating end pp notification
+        PlannedNotification endNot = new PlannedNotification();
+        endNot.setReceiver(artist.getOwner());
+        endNot.setTime(pp.getEndTime());
+        endNot.setType(PlannedNotificationType.PP_END);
+        endNot.setArtist(artist);
+        nots.add(endNot);
+        //generating warning notification
+        PlannedNotification warnNot = new PlannedNotification();
+        warnNot.setReceiver(artist.getOwner());
+        warnNot.setTime(new Date(pp.getEndTime().getTime() - 60000));
+        warnNot.setType(PlannedNotificationType.PP_END_WARN);
+        warnNot.setArtist(artist);
+        nots.add(warnNot);
+        //generating notification about pp start
+        PlannedNotification startNot = new PlannedNotification();
+        startNot.setTime(pp.getStartTime());
+        startNot.setType(PlannedNotificationType.SUBSCRIBE_START);
+        startNot.setArtist(artist);
+        nots.add(startNot);
+        if (pp.getStartTime().getTime() - new Date().getTime() > 60000){
+            //generating notification about pp creation
+            PlannedNotification createNot = new PlannedNotification();
+            createNot.setTime(new Date());
+            createNot.setType(PlannedNotificationType.SUBSCRIBE_CREATE);
+            createNot.setArtist(artist);
+            nots.add(createNot);
+        }
+        plannedNotificationRepository.saveAll(nots);
     }
 }

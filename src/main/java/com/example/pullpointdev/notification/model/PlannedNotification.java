@@ -1,5 +1,6 @@
 package com.example.pullpointdev.notification.model;
 
+import com.example.pullpointdev.artist.model.Artist;
 import com.example.pullpointdev.user.model.User;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,7 +20,11 @@ public class PlannedNotification {
     @OneToOne
     private User receiver;
 
+    @Enumerated(value = EnumType.STRING)
+    private PlannedNotificationType type;
+
     private Date time;
 
-    private Boolean warned = false;
+    @ManyToOne
+    private Artist artist;
 }

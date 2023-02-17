@@ -1,6 +1,7 @@
 package com.example.pullpointdev.notification;
 
 import com.example.pullpointdev.notification.model.PlannedNotification;
+import com.example.pullpointdev.notification.model.PlannedNotificationType;
 import com.example.pullpointdev.notification.repository.PlannedNotificationRepository;
 import com.example.pullpointdev.pullpoint.model.PullPoint;
 import com.example.pullpointdev.pullpoint.service.PullPointService;
@@ -12,6 +13,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
@@ -27,23 +29,17 @@ public class PlannedChecker {
 
     @Scheduled(fixedRate=60000)
     @SneakyThrows
+    @Transactional
     public void checkPlannedNots() {
         log.info("checking planned notifications");
         List<PlannedNotification> nots = plannedNotificationRepository.findAll();
         if(!nots.isEmpty()) {
             for (PlannedNotification not : nots) {
-                if (not.getTime().getTime() - 600000 <= new Date().getTime() && !not.getWarned()) {
-                    notificationService.sendEndPPWarningNotification(not.getReceiver().getPhone());
-                    not.setWarned(true);
-                    plannedNotificationRepository.save(not);
-                    log.info("sent warning message");
-                } else if (not.getTime().getTime() <= new Date().getTime()) {
-                    notificationService.sendEndPPNotification(not.getReceiver().getPhone());
+                if (not.getType() == PlannedNotificationType.PP_END){
                     pullPointService.closePP(not.getReceiver().getPhone());
-                    not.setWarned(true);
-                    plannedNotificationRepository.save(not);
-                    log.info("sent end message");
                 }
+                notificationService.sendNotification(not.getReceiver(), not.getArtist(), not.getType());
+                plannedNotificationRepository.delete(not);
             }
         }
     }
