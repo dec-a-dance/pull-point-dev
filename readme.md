@@ -4,6 +4,7 @@
 ### project is in development...
 ### [master](https://github.com/dec-a-dance/pull-point-dev/tree/master) - latest stable version of backend
 ### [dev](https://github.com/dec-a-dance/pull-point-dev/tree/dev) - current version (bugs included, not tested etc)
+### [refactoring] (https://github.com/dec-a-dance/pull-point-dev/tree/refactoring) - refactoring of the project
 ### Actual Swagger: http://pullpoint.ru:2022/api
 
 Pull Point is an application to connect street artists with their audience.
