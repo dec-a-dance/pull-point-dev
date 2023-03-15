@@ -50,9 +50,9 @@ public class FinanceService {
 
     @Transactional(rollbackFor = {IncorrectBalanceException.class})
     public Transaction transfer(String userPhone, Long sum, String receiverName) {
-        User owner = userRepository.findByPhone(userPhone).orElseThrow(() -> new NullPointerException("No user found."));
-        Wallet wallet = walletRepository.findByOwner(owner).orElseThrow(() -> new NullPointerException("You don't have wallet."));
-        Artist receiver = artistRepository.findByName(receiverName).orElseThrow(() -> new NullPointerException("No artist found."));
+        User owner = userRepository.findByPhone(userPhone).orElseThrow(() -> new NullPointerException("No user found with such phone: " + userPhone));
+        Wallet wallet = walletRepository.findByOwner(owner).orElseThrow(() -> new NullPointerException("No wallet found for this user: " + userPhone));
+        Artist receiver = artistRepository.findByName(receiverName).orElseThrow(() -> new NullPointerException("No artist found with such name: " + receiverName));
         Wallet receiverWallet = walletRepository.findByOwner(receiver.getOwner()).orElseThrow(() -> new NullPointerException("Artist doesn't have a wallet. Why? I don't know. Egor, chini."));
 
         receiverWallet.setBalance(receiverWallet.getBalance() + sum);
@@ -75,8 +75,8 @@ public class FinanceService {
 
     @Transactional(rollbackFor = {IncorrectBalanceException.class})
     public Transaction output(String userPhone, Long sum){
-        User owner = userRepository.findByPhone(userPhone).orElseThrow(() -> new NullPointerException("No user found."));
-        Wallet wallet = walletRepository.findByOwner(owner).orElseThrow(() -> new NullPointerException("No wallet found."));
+        User owner = userRepository.findByPhone(userPhone).orElseThrow(() -> new NullPointerException("No user found with such phone: " + userPhone));
+        Wallet wallet = walletRepository.findByOwner(owner).orElseThrow(() -> new NullPointerException("No wallet found for this user: " + userPhone));
         Transaction transaction = new Transaction();
         transaction.setType(TransactionType.OUTPUT);
         transaction.setTimestamp(new Date());

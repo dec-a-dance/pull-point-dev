@@ -1,6 +1,7 @@
 package com.example.pullpointdev.advice;
 
 import com.example.pullpointdev.artist.exception.NotYourArtistException;
+import com.example.pullpointdev.user.exception.FavsException;
 import com.example.pullpointdev.wallet.exception.IncorrectBalanceException;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
@@ -25,6 +26,11 @@ public class DefaultControllerAdvice {
 
     @ExceptionHandler(IncorrectBalanceException.class)
     public ResponseEntity<Object> handleIncorrectBalance(IncorrectBalanceException e){
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.I_AM_A_TEAPOT);
+    }
+
+    @ExceptionHandler(FavsException.class)
+    public ResponseEntity<Object> handleFavsException(IncorrectBalanceException e){
         return new ResponseEntity<>(e.getMessage(), HttpStatus.I_AM_A_TEAPOT);
     }
 

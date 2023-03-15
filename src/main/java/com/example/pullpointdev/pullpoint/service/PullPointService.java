@@ -39,8 +39,8 @@ public class PullPointService {
         SimpleDateFormat format = new SimpleDateFormat();
         format.applyPattern("dd.MM.yyyy:HH.mm");
         PullPoint pp = new PullPoint();
-        Artist artist = artistRepository.findById(req.getOwner()).orElseThrow(() -> new NullPointerException("No such artist."));
-        User tokenOwner = userRepository.findByPhone(ownerPhone).orElseThrow(() -> new NullPointerException("No such user."));
+        Artist artist = artistRepository.findById(req.getOwner()).orElseThrow(() -> new NullPointerException("No such artist with id " + req.getOwner()));
+        User tokenOwner = userRepository.findByPhone(ownerPhone).orElseThrow(() -> new NullPointerException("No such user with phone " + ownerPhone));
         if (tokenOwner != artist.getOwner()){
             throw new NotYourArtistException("It's not your artist.");
         }
@@ -75,7 +75,7 @@ public class PullPointService {
         return true;
     }
     public void closePP(String phone){
-        User rec = userRepository.findByPhone(phone).orElseThrow(() -> new NullPointerException("no such user"));
+        User rec = userRepository.findByPhone(phone).orElseThrow(() -> new NullPointerException("No such user with phone " + phone));
         pullPointRepository.deleteByOwnerAccount(rec);
         plannedNotificationRepository.deleteByReceiver(rec);
     }

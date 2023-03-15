@@ -29,8 +29,8 @@ public class ArtistService {
 
 
     public Artist updateArtist(UpdateArtistReq req, String ownerPhone) {
-        Artist artist = artistRepository.findById(req.getId()).orElseThrow(() -> new NullPointerException("No such artist."));
-        User tokenOwner = userRepository.findByPhone(ownerPhone).orElseThrow(() -> new NullPointerException("No such user as in your token."));
+        Artist artist = artistRepository.findById(req.getId()).orElseThrow(() -> new NullPointerException("No artist with id " + req.getId()));
+        User tokenOwner = userRepository.findByPhone(ownerPhone).orElseThrow(() -> new NullPointerException("No user with such phone."));
         if(tokenOwner!= artist.getOwner()){
             throw new NotYourArtistException("It's not your artist.");
         }
@@ -74,7 +74,7 @@ public class ArtistService {
     }
 
     public Artist createArtist(CreateArtistReq req, String ownerPhone){
-        User user = userRepository.findByPhone(ownerPhone).orElseThrow(() -> new NullPointerException("No such user."));
+        User user = userRepository.findByPhone(ownerPhone).orElseThrow(() -> new NullPointerException("No such user with phone " + ownerPhone));
         user.setIsArtist(true);
         user = userRepository.save(user);
         Artist artist = new Artist();
@@ -97,8 +97,8 @@ public class ArtistService {
     }
 
     public void deleteArtist(long id, String ownerPhone){
-        Artist artist = artistRepository.findById(id).orElseThrow(() -> new NullPointerException("No such artist"));
-        User tokenOwner = userRepository.findByPhone(ownerPhone).orElseThrow(() -> new NullPointerException("No such user."));
+        Artist artist = artistRepository.findById(id).orElseThrow(() -> new NullPointerException("No such artist with id " + id));
+        User tokenOwner = userRepository.findByPhone(ownerPhone).orElseThrow(() -> new NullPointerException("No such user with phone " + ownerPhone));
         if (tokenOwner != artist.getOwner()){
             throw new NotYourArtistException("It's not your artist");
         }

@@ -36,11 +36,7 @@ public class PullPointController {
     @SneakyThrows
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<String> createPP(@RequestHeader("Authorization") String auth, @RequestBody CreatePullPointReq req){
-        if(pullPointService.createPullPoint(req, jwtUtil.subjectFromToken(jwtUtil.parseToken(auth)))){
-            return ResponseEntity.ok("Pull Point has been successfully created.");
-        }
-        else{
-            return new ResponseEntity<>("Something gone wrong during creation of PP", HttpStatus.I_AM_A_TEAPOT);
-        }
+        pullPointService.createPullPoint(req, jwtUtil.subjectFromToken(jwtUtil.parseToken(auth)));
+        return ResponseEntity.ok("Pull Point has been successfully created.");
     }
 }
