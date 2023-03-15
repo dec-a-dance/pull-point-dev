@@ -37,6 +37,6 @@ public class PullPointController {
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<String> createPP(@RequestHeader("Authorization") String auth, @RequestBody CreatePullPointReq req){
         pullPointService.createPullPoint(req, jwtUtil.subjectFromToken(jwtUtil.parseToken(auth)));
-        return ResponseEntity.ok("Pull Point has been successfully created.");
+        return ResponseEntity.ok(null);
     }
 }

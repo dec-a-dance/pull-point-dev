@@ -9,6 +9,7 @@ import com.example.pullpointdev.wallet.service.FinanceService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -21,19 +22,19 @@ public class FinanceController {
 
     @PostMapping("/input")
     @SneakyThrows
-        public Transaction input(@RequestHeader("Authorization") String auth, @RequestBody InputOutputReq req){
-        return financeService.currencyInput(jwtUtil.subjectFromToken(jwtUtil.parseToken(auth)), req.getSum());
+        public ResponseEntity<Transaction> input(@RequestHeader("Authorization") String auth, @RequestBody InputOutputReq req){
+        return ResponseEntity.ok(financeService.currencyInput(jwtUtil.subjectFromToken(jwtUtil.parseToken(auth)), req.getSum()));
     }
 
     @PostMapping("/transfer")
     @SneakyThrows()
-    public Transaction transfer(@RequestHeader("Authorization") String auth, @RequestBody TransferReq req){
-        return financeService.transfer(jwtUtil.subjectFromToken(jwtUtil.parseToken(auth)), req.getSum(), req.getArtistName());
+    public ResponseEntity<Transaction> transfer(@RequestHeader("Authorization") String auth, @RequestBody TransferReq req){
+        return ResponseEntity.ok(financeService.transfer(jwtUtil.subjectFromToken(jwtUtil.parseToken(auth)), req.getSum(), req.getArtistName()));
     }
 
     @PostMapping("/output")
     @SneakyThrows
-    public Transaction output(@RequestHeader("Authorization") String auth, @RequestBody InputOutputReq req){
-        return financeService.output(jwtUtil.subjectFromToken(jwtUtil.parseToken(auth)), req.getSum());
+    public ResponseEntity<Transaction> output(@RequestHeader("Authorization") String auth, @RequestBody InputOutputReq req){
+        return ResponseEntity.ok(financeService.output(jwtUtil.subjectFromToken(jwtUtil.parseToken(auth)), req.getSum()));
     }
 }

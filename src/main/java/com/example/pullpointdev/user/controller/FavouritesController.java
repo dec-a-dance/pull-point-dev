@@ -32,7 +32,7 @@ public class FavouritesController {
     @Operation(description = "add artist to favourites")
     public ResponseEntity addToFavs(@RequestHeader("Authorization") String auth, @PathVariable Long artistId){
         service.addToFavourites(jwtUtil.subjectFromToken(jwtUtil.parseToken(auth)), artistId);
-        return ResponseEntity.ok("added");
+        return ResponseEntity.ok(null);
     }
 
     @DeleteMapping("/{artistId}")
@@ -40,6 +40,6 @@ public class FavouritesController {
     @Operation(description = "add artist to favourites")
     public ResponseEntity deleteFromFavs(@RequestHeader("Authorization") String auth, @PathVariable Long artistId){
         service.removeFromFavourites(jwtUtil.subjectFromToken(jwtUtil.parseToken(auth)), artistId);
-        return ResponseEntity.ok("removed");
+        return ResponseEntity.ok(null);
     }
 }

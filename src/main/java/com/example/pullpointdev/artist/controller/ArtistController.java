@@ -54,12 +54,12 @@ public class ArtistController {
     }
 
     @DeleteMapping("/{id}")
-    @Operation(description = "get all artist of user via {userId}")
+    @Operation(description = "delete artist")
     @SneakyThrows
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<Boolean> deleteArtist(@RequestHeader("Authorization") String auth, @PathVariable Long id) {
+    public ResponseEntity deleteArtist(@RequestHeader("Authorization") String auth, @PathVariable Long id) {
         artistService.deleteArtist(id, jwtUtil.subjectFromToken(jwtUtil.parseToken(auth)));
-        return ResponseEntity.ok(true);
+        return ResponseEntity.ok(null);
     }
 
     @GetMapping("/check/{name}")
