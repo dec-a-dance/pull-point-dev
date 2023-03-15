@@ -23,18 +23,18 @@ public class FinanceController {
     @PostMapping("/input")
     @SneakyThrows
         public ResponseEntity<Transaction> input(@RequestHeader("Authorization") String auth, @RequestBody InputOutputReq req){
-        return ResponseEntity.ok(financeService.currencyInput(jwtUtil.subjectFromToken(jwtUtil.parseToken(auth)), req.getSum()));
+        return ResponseEntity.ok(financeService.currencyInput(jwtUtil.phoneFromFullToken(auth), req.getSum()));
     }
 
     @PostMapping("/transfer")
     @SneakyThrows()
     public ResponseEntity<Transaction> transfer(@RequestHeader("Authorization") String auth, @RequestBody TransferReq req){
-        return ResponseEntity.ok(financeService.transfer(jwtUtil.subjectFromToken(jwtUtil.parseToken(auth)), req.getSum(), req.getArtistName()));
+        return ResponseEntity.ok(financeService.transfer(jwtUtil.phoneFromFullToken(auth), req.getSum(), req.getArtistName()));
     }
 
     @PostMapping("/output")
     @SneakyThrows
     public ResponseEntity<Transaction> output(@RequestHeader("Authorization") String auth, @RequestBody InputOutputReq req){
-        return ResponseEntity.ok(financeService.output(jwtUtil.subjectFromToken(jwtUtil.parseToken(auth)), req.getSum()));
+        return ResponseEntity.ok(financeService.output(jwtUtil.phoneFromFullToken(auth), req.getSum()));
     }
 }

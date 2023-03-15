@@ -29,7 +29,7 @@ public class WalletController {
     @Operation(description = "create wallet for user")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Wallet> createWallet(@PathVariable String credential, @RequestHeader("Authorization") String auth){
-        return ResponseEntity.ok(walletService.createWallet(credential, jwtUtil.subjectFromToken(jwtUtil.parseToken(auth))));
+        return ResponseEntity.ok(walletService.createWallet(credential, jwtUtil.phoneFromFullToken(auth)));
     }
 
     @GetMapping()
@@ -37,7 +37,7 @@ public class WalletController {
     @Operation(description = "get a wallet info")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Wallet> getWallet(@RequestHeader("Authorization") String auth){
-        return ResponseEntity.ok(walletService.getWallet(jwtUtil.subjectFromToken(jwtUtil.parseToken(auth))));
+        return ResponseEntity.ok(walletService.getWallet(jwtUtil.phoneFromFullToken(auth)));
     }
 
     @GetMapping("/history")
@@ -45,7 +45,7 @@ public class WalletController {
     @Operation(description = "get transaction history")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<List<TransactionDTO>> getTransactionHistory(@RequestHeader("Authorization") String auth){
-        return ResponseEntity.ok(walletService.getTransactionHistory(jwtUtil.subjectFromToken(jwtUtil.parseToken(auth))));
+        return ResponseEntity.ok(walletService.getTransactionHistory(jwtUtil.phoneFromFullToken(auth)));
     }
 
 

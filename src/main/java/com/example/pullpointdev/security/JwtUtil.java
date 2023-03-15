@@ -44,4 +44,8 @@ public class JwtUtil {
     public String parseToken(String auth){
         return auth.substring(7);
     }
+
+    public String phoneFromFullToken(String token){
+        return this.subjectFromToken(this.parseToken(token));
+    }
 }

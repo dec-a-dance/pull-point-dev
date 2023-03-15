@@ -60,13 +60,13 @@ public class UserController {
     @SneakyThrows
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<ApproveTokenResp> refresh(@RequestHeader("Authorization") String auth){
-        return ResponseEntity.ok(authService.refresh(jwtUtil.subjectFromToken(jwtUtil.parseToken(auth))));
+        return ResponseEntity.ok(authService.refresh(jwtUtil.phoneFromFullToken(auth)));
     }
 
     @GetMapping("/artists")
     @SneakyThrows
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<List<Artist>> getArtists(@RequestHeader("Authorization") String auth){
-        return ResponseEntity.ok(authService.getArtists(jwtUtil.subjectFromToken(jwtUtil.parseToken(auth))));
+        return ResponseEntity.ok(authService.getArtists(jwtUtil.phoneFromFullToken(auth)));
     }
 }

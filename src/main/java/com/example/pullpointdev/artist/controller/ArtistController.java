@@ -30,7 +30,7 @@ public class ArtistController {
     @SneakyThrows
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Artist> updateArtist(@RequestHeader("Authorization") String auth, @RequestBody UpdateArtistReq req) {
-        return ResponseEntity.ok(artistService.updateArtist(req, jwtUtil.subjectFromToken(jwtUtil.parseToken(auth))));
+        return ResponseEntity.ok(artistService.updateArtist(req, jwtUtil.phoneFromFullToken(auth)));
     }
 
     @PostMapping()
@@ -38,7 +38,7 @@ public class ArtistController {
     @SneakyThrows
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Artist> createArtist(@RequestHeader("Authorization") String auth, @RequestBody CreateArtistReq req) {
-        return ResponseEntity.ok(artistService.createArtist(req, jwtUtil.subjectFromToken(jwtUtil.parseToken(auth))));
+        return ResponseEntity.ok(artistService.createArtist(req, jwtUtil.phoneFromFullToken(auth)));
     }
 
     @PostMapping("/search")
@@ -58,7 +58,7 @@ public class ArtistController {
     @SneakyThrows
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity deleteArtist(@RequestHeader("Authorization") String auth, @PathVariable Long id) {
-        artistService.deleteArtist(id, jwtUtil.subjectFromToken(jwtUtil.parseToken(auth)));
+        artistService.deleteArtist(id, jwtUtil.phoneFromFullToken(auth));
         return ResponseEntity.ok(null);
     }
 
