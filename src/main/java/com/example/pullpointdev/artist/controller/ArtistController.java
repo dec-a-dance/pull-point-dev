@@ -46,7 +46,7 @@ public class ArtistController {
         return ResponseEntity.ok(artistServiceImpl.searchArtists(req));
     }
 
-    @GetMapping("byUser/{userId}")
+    @GetMapping("by-user/{userId}")
     @Operation(description = "get all artist of user via {userId}")
     public ResponseEntity<List<Artist>> getMyArtists(@PathVariable Long userId) {
         return ResponseEntity.ok(artistServiceImpl.getArtistsInfo(userId));

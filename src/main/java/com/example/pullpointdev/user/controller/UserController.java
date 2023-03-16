@@ -33,7 +33,7 @@ public class UserController {
         return ResponseEntity.ok(tknHndlr);
     }
 
-    @PostMapping("/verify")
+    @PostMapping("/verification")
     @Operation(description = "verify that code is correct")
     @SneakyThrows
     public ResponseEntity<ApproveTokenResp> verify(@RequestBody ApproveTokenReq req){
@@ -62,7 +62,7 @@ public class UserController {
         return ResponseEntity.ok(authServiceImpl.refresh(jwtUtil.phoneFromFullToken(auth)));
     }
 
-    @GetMapping("/artists")
+    @GetMapping("/artist")
     @SneakyThrows
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<List<Artist>> getArtists(@RequestHeader("Authorization") String auth){

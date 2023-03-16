@@ -16,8 +16,8 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/pull_point")
-@Tag(name="pull_point", description = "Pull point API")
+@RequestMapping("/pull-point")
+@Tag(name="pull-point", description = "Pull point API")
 public class PullPointController {
     private final PullPointServiceImpl pullPointServiceImpl;
 
