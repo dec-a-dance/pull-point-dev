@@ -3,6 +3,7 @@ package com.example.pullpointdev.pullpoint.model;
 import com.example.pullpointdev.artist.model.Artist;
 import com.example.pullpointdev.category.model.Category;
 import com.example.pullpointdev.user.model.User;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

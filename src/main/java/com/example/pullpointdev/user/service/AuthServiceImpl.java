@@ -7,6 +7,7 @@ import com.example.pullpointdev.user.model.dto.ApproveTokenResp;
 import com.example.pullpointdev.user.model.dto.UpdateUserReq;
 import com.example.pullpointdev.user.model.User;
 import com.example.pullpointdev.artist.repository.ArtistRepository;
+import com.example.pullpointdev.user.model.dto.UserDTO;
 import com.example.pullpointdev.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -60,12 +61,12 @@ public class AuthServiceImpl implements AuthService{
         return new ApproveTokenResp(result, jwt, user);
     }
 
-    public User updateUser(UpdateUserReq req){
+    public UserDTO updateUser(UpdateUserReq req){
         User user = userRepository.findByPhone(req.getPhone()).orElseThrow(NullPointerException::new);
         user.setUsername(req.getUsername());
         user.setNotificationsToken(req.getNotificationsToken());
         user = userRepository.save(user);
-        return user;
+        return user.convertToDto();
     }
 
     public ApproveTokenResp refresh(String phone){

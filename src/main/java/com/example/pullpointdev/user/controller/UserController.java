@@ -44,7 +44,7 @@ public class UserController {
     @PutMapping()
     @Operation(description = "update user info")
     @SneakyThrows
-    public ResponseEntity<User> updateUser(@RequestBody UpdateUserReq req){
+    public ResponseEntity<UserDTO> updateUser(@RequestBody UpdateUserReq req){
         return ResponseEntity.ok(authServiceImpl.updateUser(req));
     }
 

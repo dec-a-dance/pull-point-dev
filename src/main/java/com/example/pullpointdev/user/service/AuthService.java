@@ -4,6 +4,7 @@ import com.example.pullpointdev.artist.model.Artist;
 import com.example.pullpointdev.user.model.User;
 import com.example.pullpointdev.user.model.dto.ApproveTokenResp;
 import com.example.pullpointdev.user.model.dto.UpdateUserReq;
+import com.example.pullpointdev.user.model.dto.UserDTO;
 
 import java.util.List;
 
@@ -12,7 +13,7 @@ public interface AuthService {
 
     ApproveTokenResp checkToken(String phone, String token);
 
-    User updateUser(UpdateUserReq req);
+    UserDTO updateUser(UpdateUserReq req);
 
     ApproveTokenResp refresh(String phone);
 

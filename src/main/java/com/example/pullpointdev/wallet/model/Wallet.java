@@ -20,6 +20,7 @@ public class Wallet {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id")
+    @JsonIgnore
     private long id;
 
     @OneToOne

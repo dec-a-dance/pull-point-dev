@@ -2,6 +2,7 @@ package com.example.pullpointdev.user.model;
 
 import com.example.pullpointdev.artist.model.Artist;
 import com.example.pullpointdev.security.Role;
+import com.example.pullpointdev.user.model.dto.UserDTO;
 import com.example.pullpointdev.wallet.model.Wallet;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
@@ -83,4 +84,16 @@ public class User implements UserDetails {
 
     @JsonIgnore
     private Role role;
+
+    public UserDTO convertToDto(){
+        UserDTO dto = new UserDTO();
+        dto.setId(this.getId());
+        dto.setPhone(this.getPhone());
+        dto.setUsername(this.getUsername());
+        dto.setArtists(this.getArtists());
+        dto.setWallet(this.getWallet());
+        dto.setFavourites(this.getFavourites());
+        dto.setIsArtist(this.isArtist);
+        return dto;
+    }
 }
