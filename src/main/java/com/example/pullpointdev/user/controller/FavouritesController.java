@@ -2,7 +2,7 @@ package com.example.pullpointdev.user.controller;
 
 import com.example.pullpointdev.artist.model.Artist;
 import com.example.pullpointdev.security.JwtUtil;
-import com.example.pullpointdev.user.service.FavouritesService;
+import com.example.pullpointdev.user.service.FavouritesServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +17,7 @@ import java.util.List;
 @RequestMapping("/favs")
 @Tag(name="favourites", description = "favourites API")
 public class FavouritesController {
-    private final FavouritesService service;
+    private final FavouritesServiceImpl service;
     private final JwtUtil jwtUtil;
 
     @GetMapping()

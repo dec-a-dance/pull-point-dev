@@ -1,11 +1,9 @@
 package com.example.pullpointdev.wallet.controller;
 
 import com.example.pullpointdev.security.JwtUtil;
-import com.example.pullpointdev.wallet.model.Transaction;
 import com.example.pullpointdev.wallet.model.Wallet;
-import com.example.pullpointdev.wallet.model.dto.CreateWalletReq;
 import com.example.pullpointdev.wallet.model.dto.TransactionDTO;
-import com.example.pullpointdev.wallet.service.WalletService;
+import com.example.pullpointdev.wallet.service.WalletServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +19,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Tag(name = "wallet", description = "Wallet API")
 public class WalletController {
-    private final WalletService walletService;
+    private final WalletServiceImpl walletServiceImpl;
     private final JwtUtil jwtUtil;
 
     @PostMapping("/{credential}")
@@ -29,7 +27,7 @@ public class WalletController {
     @Operation(description = "create wallet for user")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Wallet> createWallet(@PathVariable String credential, @RequestHeader("Authorization") String auth){
-        return ResponseEntity.ok(walletService.createWallet(credential, jwtUtil.phoneFromFullToken(auth)));
+        return ResponseEntity.ok(walletServiceImpl.createWallet(credential, jwtUtil.phoneFromFullToken(auth)));
     }
 
     @GetMapping()
@@ -37,7 +35,7 @@ public class WalletController {
     @Operation(description = "get a wallet info")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Wallet> getWallet(@RequestHeader("Authorization") String auth){
-        return ResponseEntity.ok(walletService.getWallet(jwtUtil.phoneFromFullToken(auth)));
+        return ResponseEntity.ok(walletServiceImpl.getWallet(jwtUtil.phoneFromFullToken(auth)));
     }
 
     @GetMapping("/history")
@@ -45,7 +43,7 @@ public class WalletController {
     @Operation(description = "get transaction history")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<List<TransactionDTO>> getTransactionHistory(@RequestHeader("Authorization") String auth){
-        return ResponseEntity.ok(walletService.getTransactionHistory(jwtUtil.phoneFromFullToken(auth)));
+        return ResponseEntity.ok(walletServiceImpl.getTransactionHistory(jwtUtil.phoneFromFullToken(auth)));
     }
 
 

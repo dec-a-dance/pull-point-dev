@@ -3,9 +3,7 @@ package com.example.pullpointdev.notification;
 import com.example.pullpointdev.notification.model.PlannedNotification;
 import com.example.pullpointdev.notification.model.PlannedNotificationType;
 import com.example.pullpointdev.notification.repository.PlannedNotificationRepository;
-import com.example.pullpointdev.pullpoint.model.PullPoint;
-import com.example.pullpointdev.pullpoint.service.PullPointService;
-import com.google.firebase.messaging.FirebaseMessagingException;
+import com.example.pullpointdev.pullpoint.service.PullPointServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -14,13 +12,8 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.sql.Time;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Logger;
 
 @EnableScheduling
 @Slf4j
@@ -28,7 +21,7 @@ import java.util.logging.Logger;
 @RequiredArgsConstructor
 public class PlannedChecker {
     private final PlannedNotificationRepository plannedNotificationRepository;
-    private final PullPointService pullPointService;
+    private final PullPointServiceImpl pullPointServiceImpl;
     private final NotificationService notificationService;
 
     @Scheduled(fixedRate=60000)
@@ -41,7 +34,7 @@ public class PlannedChecker {
             for (PlannedNotification not : nots) {
                 if(not.getTime().getTime() < now.getTime()) {
                     if (not.getType() == PlannedNotificationType.PP_END) {
-                        pullPointService.closePP(not.getReceiver().getPhone());
+                        pullPointServiceImpl.closePP(not.getReceiver().getPhone());
                     }
                     notificationService.sendNotification(not.getReceiver(), not.getArtist(), not.getType());
                     plannedNotificationRepository.delete(not);

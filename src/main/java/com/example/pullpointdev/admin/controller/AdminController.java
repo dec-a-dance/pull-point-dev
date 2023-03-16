@@ -1,6 +1,6 @@
 package com.example.pullpointdev.admin.controller;
 
-import com.example.pullpointdev.admin.service.AdminService;
+import com.example.pullpointdev.admin.service.AdminServiceImpl;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -13,11 +13,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/admin")
 @Tag(name = "admin", description = "Admin requests")
 public class AdminController {
-    private final AdminService adminService;
+    private final AdminServiceImpl adminServiceImpl;
 
     @PostMapping("/clean-db")
     public ResponseEntity<String> clean(){
-        adminService.clean();
+        adminServiceImpl.clean();
         return ResponseEntity.ok("cleaned");
     }
 }
