@@ -67,8 +67,8 @@ public class PullPointServiceImpl implements PullPointService{
         pp.setLongitude(req.getLongitude());
         pp.setDescription(req.getDescription());
         pp.setCategory(categoryRepository.findById(req.getCategory()).orElseThrow());
-        pp.setStartTime(format.parse(req.getStartTime()));
-        pp.setEndTime(format.parse(req.getEndTime()));
+        pp.setStartTime(new Date(format.parse(req.getStartTime()).getTime() + 10800000));
+        pp.setEndTime(new Date(format.parse(req.getEndTime()).getTime() + 10800000));
         pp.setOwner(artist);
         pp = pullPointRepository.save(pp);
         generateNots(artist, pp);
