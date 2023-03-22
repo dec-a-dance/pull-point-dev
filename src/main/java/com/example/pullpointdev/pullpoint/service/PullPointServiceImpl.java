@@ -102,7 +102,7 @@ public class PullPointServiceImpl implements PullPointService{
         startNot.setType(PlannedNotificationType.SUBSCRIBE_START);
         startNot.setArtist(artist);
         nots.add(startNot);
-        if (pp.getStartTime().getTime() - new Date().getTime() > 600000){
+        if (pp.getStartTime().getTime() - new Date().getTime() - 10800000 > 600000){
             //generating notification about pp creation
             PlannedNotification createNot = new PlannedNotification();
             createNot.setTime(new Date());
