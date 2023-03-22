@@ -85,20 +85,20 @@ public class PullPointServiceImpl implements PullPointService{
         //generating end pp notification
         PlannedNotification endNot = new PlannedNotification();
         endNot.setReceiver(artist.getOwner());
-        endNot.setTime(pp.getEndTime());
+        endNot.setTime(new Date(pp.getEndTime().getTime() - 10800000));
         endNot.setType(PlannedNotificationType.PP_END);
         endNot.setArtist(artist);
         nots.add(endNot);
         //generating warning notification
         PlannedNotification warnNot = new PlannedNotification();
         warnNot.setReceiver(artist.getOwner());
-        warnNot.setTime(new Date(pp.getEndTime().getTime() - 600000));
+        warnNot.setTime(new Date(pp.getEndTime().getTime() - 600000 - 10800000));
         warnNot.setType(PlannedNotificationType.PP_END_WARN);
         warnNot.setArtist(artist);
         nots.add(warnNot);
         //generating notification about pp start
         PlannedNotification startNot = new PlannedNotification();
-        startNot.setTime(pp.getStartTime());
+        startNot.setTime(new Date(pp.getStartTime().getTime() - 10800000));
         startNot.setType(PlannedNotificationType.SUBSCRIBE_START);
         startNot.setArtist(artist);
         nots.add(startNot);
