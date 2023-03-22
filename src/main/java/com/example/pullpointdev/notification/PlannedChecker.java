@@ -32,6 +32,8 @@ public class PlannedChecker {
         List<PlannedNotification> nots = plannedNotificationRepository.findAll();
         if(!nots.isEmpty()) {
             for (PlannedNotification not : nots) {
+                log.info(not.getTime().toString());
+                log.info(now.toString());
                 if(not.getTime().getTime() < now.getTime()) {
                     if (not.getType() == PlannedNotificationType.PP_END) {
                         pullPointServiceImpl.closePP(not.getReceiver().getPhone());
