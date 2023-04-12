@@ -4,6 +4,7 @@ import com.example.pullpointdev.artist.model.Artist;
 import com.example.pullpointdev.user.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface ArtistRepository extends JpaRepository<Artist, Long> {
@@ -11,7 +12,5 @@ public interface ArtistRepository extends JpaRepository<Artist, Long> {
 
     Optional<Artist> findById(Long id);
 
-    Artist findByOwner(User user);
-
-
+    List<Artist> findAllByVerification(Boolean verification);
 }

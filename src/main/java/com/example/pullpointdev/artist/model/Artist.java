@@ -36,4 +36,7 @@ public class Artist {
     @ManyToOne
     @JsonIgnore
     private User owner;
+
+    @Column(name="verification")
+    private Boolean verification;
 }
