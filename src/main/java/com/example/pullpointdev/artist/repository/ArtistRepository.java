@@ -1,6 +1,7 @@
 package com.example.pullpointdev.artist.repository;
 
 import com.example.pullpointdev.artist.model.Artist;
+import com.example.pullpointdev.artist.model.ArtistVerificationStatus;
 import com.example.pullpointdev.user.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -12,5 +13,5 @@ public interface ArtistRepository extends JpaRepository<Artist, Long> {
 
     Optional<Artist> findById(Long id);
 
-    List<Artist> findAllByVerification(Boolean verification);
+    List<Artist> findAllByVerification(ArtistVerificationStatus verification);
 }

@@ -38,5 +38,6 @@ public class Artist {
     private User owner;
 
     @Column(name="verification")
-    private Boolean verification;
+    @Enumerated(EnumType.ORDINAL)
+    private ArtistVerificationStatus verification;
 }
