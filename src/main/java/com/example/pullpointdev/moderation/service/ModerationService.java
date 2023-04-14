@@ -68,5 +68,4 @@ public class ModerationService {
         artist.setVerification(ArtistVerificationStatus.DECLINED);
         return artistRepository.save(artist);
     }
-
 }

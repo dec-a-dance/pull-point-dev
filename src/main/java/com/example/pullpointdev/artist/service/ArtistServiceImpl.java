@@ -1,6 +1,7 @@
 package com.example.pullpointdev.artist.service;
 
 import com.example.pullpointdev.artist.exception.NotYourArtistException;
+import com.example.pullpointdev.artist.model.ArtistVerificationStatus;
 import com.example.pullpointdev.artist.model.dto.CreateArtistReq;
 import com.example.pullpointdev.artist.model.dto.SearchArtistsReq;
 import com.example.pullpointdev.artist.model.dto.UpdateArtistReq;
@@ -79,6 +80,7 @@ public class ArtistServiceImpl implements ArtistService{
         user = userRepository.save(user);
         Artist artist = new Artist();
         artist.setOwner(user);
+        artist.setVerification(ArtistVerificationStatus.WAITING);
         artist = artistRepository.save(artist);
         List<Artist> ar = user.getArtists();
         ar.add(artist);
